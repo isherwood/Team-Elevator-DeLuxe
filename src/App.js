@@ -1,25 +1,20 @@
-import logo from './logo.svg';
+import {Container, Row} from 'react-bootstrap';
+
 import './App.css';
+import Elevator from "./components/Elevator/Elevator";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Container fluid className='app-container d-flex flex-column vh-100'>
+            <Row>
+                <h1 className='display-5 fst-italic text-primary text-center'>Team Elevator De Luxe</h1>
+            </Row>
+
+            <Row className='flex-grow-1 justify-content-center align-items-center'>
+                <Elevator/>
+            </Row>
+        </Container>
+    );
 }
 
 export default App;
