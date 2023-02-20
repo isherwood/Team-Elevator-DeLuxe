@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Badge, Col, ListGroup, ListGroupItem} from "react-bootstrap";
+import {Button, Col} from "react-bootstrap";
 
 import './styles.css';
 
@@ -48,18 +48,41 @@ const Elevator = () => {
         }
     };
 
+    const getButtonStyles = count => {
+        let highestCount = 0;
+        let opacity = 0;
+
+        if (count > 0) {
+            levels.forEach(level => {
+                if (level.count > highestCount) {
+                    highestCount = level.count;
+                }
+            });
+
+            opacity = count / highestCount * .75;
+        }
+
+        return {
+            opacity: opacity
+        }
+    }
+
     return (
         <Col className='col-auto'>
-            <ListGroup variant='flush' className='text-center text-uppercase snug'>
+            <div className='btn-box d-grid text-center text-uppercase'>
                 {levels.map((level, index) => (
-                    <ListGroupItem key={level.id} action
-                                   onClick={() => incrementLevel(index)}>
-                        {level.id}
-                        <Badge pill className='ms-2' onClick={event => decrementLevel(event, index)}>
-                            {level.count > 0 && level.count}</Badge>
-                    </ListGroupItem>
+                    <Button key={index} variant='light' className='level-btn py-0 position-relative overflow-hidden'
+                            onClick={() => incrementLevel(index)}>
+                        <div className='btn-bg' style={getButtonStyles(level.count)}></div>
+
+                        <div className='btn-count position-absolute end-0 lead' onClick={event => decrementLevel(event, index)}>
+                            <b>{level.count > 0 && level.count}</b>
+                        </div>
+
+                        <div className='position-relative my-1'>{level.id}</div>
+                    </Button>
                 ))}
-            </ListGroup>
+            </div>
         </Col>
     );
 }
