@@ -2,9 +2,31 @@
     padding: 0 3rem;
 }
 
+.btn.level-btn:hover:not(:has(.count-pill:hover)):after {
+    content: '+';
+    position: absolute;
+    top: -4px;
+    left: 6px;
+    color: #555;
+}
+
 .btn-count {
-    transform: translateX(50%);
-    padding-right: 2.5rem;
+    right: 4px;
+    z-index: 9;
+}
+
+.count-pill:hover {
+    background: #fff;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.count-pill:hover::after {
+    content: '-';
+    font-weight: normal;
+    position: absolute;
+    top: -4px;
+    left: 4px;
 }
 
 .btn-bg {
@@ -17,12 +39,25 @@
     transition: all 0.5s;
 }
 
+.elevator-shaft {
+    width: calc(1.425rem + 2.5vw);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.25));
+
+}
+
+.elevator {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 1.5s ease-in-out;
+}
+
 .level-btn:nth-child(2) .btn-bg {
     background-color: #096CEC;
 }
 
 .level-btn:nth-child(3) .btn-bg {
-    background-color:#1378DE;
+    background-color: #1378DE;
 }
 
 .level-btn:nth-child(4) .btn-bg {
