@@ -7,7 +7,7 @@ import Elevator from "./components/Elevator/Elevator";
 
 function App() {
     const [showOffCanvas, setShowOffCanvas] = useState(false);
-    const [showElevator, setShowElevator] = useState(true);
+    const [showElevator, setShowElevator] = useState(false);
 
     const handleHideOffCanvas = () => setShowOffCanvas(false);
     const handleShowOffCanvas = () => setShowOffCanvas(true);
