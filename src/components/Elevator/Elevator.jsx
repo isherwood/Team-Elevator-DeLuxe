@@ -122,7 +122,7 @@ const Elevator = props => {
                 {props.showElevator &&
                     <div className='elevator-shaft ms-2 bg-secondary rounded-2'>
                         <div className='position-relative h-100'>
-                            <GiElevator className='elevator display-5 text-white opacity-75 position-absolute'
+                            <GiElevator className='elevator display-5 text-dark opacity-75 position-absolute'
                                         style={getElevatorStyles()}/>
                         </div>
                     </div>
