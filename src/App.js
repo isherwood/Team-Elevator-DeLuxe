@@ -18,7 +18,7 @@ function App() {
                 <Col className='position-relative'>
                     <h1 className='display-5 fst-italic text-center mt-2'>Team Elevator De Luxe</h1>
 
-                    <Button variant='link' size='lg' className='position-absolute top-0 end-0 mt-sm-2 mt-md-3'
+                    <Button variant='link' size='lg' className='help-btn position-absolute top-0 mt-sm-2 mt-md-3'
                             onClick={handleShowOffCanvas}>
                         <TfiHelpAlt/>
                     </Button>

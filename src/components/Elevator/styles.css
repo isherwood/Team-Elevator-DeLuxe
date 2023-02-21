@@ -29,20 +29,9 @@
     left: 4px;
 }
 
-.btn-bg {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    background-color: #0162F9;
-    transition: all 0.5s;
-}
-
 .elevator-shaft {
     width: calc(1.425rem + 2.5vw);
     background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.25));
-
 }
 
 .elevator {
@@ -52,74 +41,84 @@
     transition: all 1.5s ease-in-out;
 }
 
+.level-btn .btn-bg {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    background-color: #0567F2;
+    transition: all 0.5s;
+}
+
 .level-btn:nth-child(2) .btn-bg {
-    background-color: #096CEC;
+    background-color: #157ADB;
 }
 
 .level-btn:nth-child(3) .btn-bg {
-    background-color: #1378DE;
+    background-color: #1F87CD;
 }
 
 .level-btn:nth-child(4) .btn-bg {
-    background-color: #1E86CE;
+    background-color: #2E99B7;
 }
 
 .level-btn:nth-child(5) .btn-bg {
-    background-color: #2791C1;
+    background-color: #3AA8A6;
 }
 
 .level-btn:nth-child(6) .btn-bg {
-    background-color: #329EB2;
+    background-color: #49B992;
 }
 
 .level-btn:nth-child(7) .btn-bg {
-    background-color: #3FADA0;
+    background-color: #56C87E;
 }
 
 .level-btn:nth-child(8) .btn-bg {
-    background-color: #4EBF88;
+    background-color: #63D96B;
 }
 
 .level-btn:nth-child(9) .btn-bg {
-    background-color: #56C97D;
+    background-color: #75D654;
 }
 
 .level-btn:nth-child(10) .btn-bg {
-    background-color: #63D96A;
+    background-color: #8CC53B;
 }
 
 .level-btn:nth-child(11) .btn-bg {
-    background-color: #6DDD65;
+    background-color: #A5B01D;
 }
 
 .level-btn:nth-child(12) .btn-bg {
-    background-color: #7CCB72;
+    background-color: #BA9F04;
 }
 
 .level-btn:nth-child(13) .btn-bg {
-    background-color: #8BBC7F;
+    background-color: #C59218;
 }
 
 .level-btn:nth-child(14) .btn-bg {
-    background-color: #98AF8A;
+    background-color: #CE853A;
 }
 
 .level-btn:nth-child(15) .btn-bg {
-    background-color: #A89E97;
+    background-color: #D7795B;
 }
 
 .level-btn:nth-child(16) .btn-bg {
-    background-color: #BB8AA8;
+    background-color: #E06D7A;
 }
 
 .level-btn:nth-child(17) .btn-bg {
-    background-color: #CF75B8;
+    background-color: #E86297;
 }
 
 .level-btn:nth-child(18) .btn-bg {
-    background-color: #E65DCC;
+    background-color: #F156B7;
 }
 
 .level-btn:nth-child(19) .btn-bg {
-    background-color: #FB48DE;
+    background-color: #FA49D7;
 }
