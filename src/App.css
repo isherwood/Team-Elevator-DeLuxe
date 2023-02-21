@@ -1,0 +1,20 @@
+.help-btn {
+    right: 0;
+    animation-delay: 1s;
+    animation-duration: 0.35s;
+    animation-iteration-count: 2;
+    animation-name: sideBounce;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes sideBounce {
+    from {
+        right: 0;
+    }
+    50% {
+        right: 2vw;
+    }
+    100% {
+        right: 0;
+    }
+}
