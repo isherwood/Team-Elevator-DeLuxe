@@ -76,16 +76,9 @@ const Elevator = props => {
     }
 
     useEffect(() => {
-        let lowestLevel = 0;
         let totalCount = 0;
         let totalWeight = 0;
         let height;
-
-        levels.forEach((level, index) => {
-            if (level.count > 0) {
-                if (!lowestLevel) lowestLevel = index;
-            }
-        });
 
         levels.forEach((level, index) => {
             if (level.count > 0) {
