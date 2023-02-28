@@ -75,11 +75,16 @@ const Segment = props =>
               onClick={props.incrementSegment}/>
         {props.count > 0 &&
             <text className='segment-count' x='500' y='2.9rem' textAnchor={textAnchor(props.index, props.segments)}
-                  style={countStyles(props.degrees, props.index, props.segments)}
-                  onClick={props.decrementSegment}>{props.count}</text>
+                  style={countStyles(props.degrees, props.index, props.segments)}>{props.count}</text>
         }
         <text className='segment-label' x='500' y='.65rem' textAnchor={textAnchor(props.index, props.segments)}
               style={labelStyles(props.degrees, props.index, props.segments)}>{props.label}</text>
+        {props.count > 0 &&
+            <text className='segment-count segment-count-over'
+                  x='500' y='2.9rem' textAnchor={textAnchor(props.index, props.segments)}
+                  style={countStyles(props.degrees, props.index, props.segments)}
+                  onClick={props.decrementSegment}>{props.count}</text>
+        }
     </g>;
 
 export default Segment;
