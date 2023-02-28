@@ -1,12 +1,12 @@
 import {shallow} from 'enzyme';
-import Elevator from './Elevator';
+import Segment from './Segment';
 
-describe('Elevator component', () => {
+describe('Segment component', () => {
     let component;
 
     beforeEach(() => {
         // build the component
-        component = shallow(<Elevator/>);
+        component = shallow(<Segment/>);
     });
 
     afterEach(() => {

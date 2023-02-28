@@ -28,27 +28,7 @@ const Elevator = props => {
     ]);
     const [elevatorHeight, setElevatorHeight] = useState(0);
 
-    const incrementLevel = level => {
-        const newLevels = [...levels];
 
-        if (newLevels[level]['count']) {
-            newLevels[level].count++;
-        } else {
-            newLevels[level]['count'] = 1;
-        }
-
-        setLevels(newLevels);
-    };
-
-    const decrementLevel = (event, level) => {
-        event.stopPropagation();
-        const newLevels = [...levels];
-
-        if (newLevels[level]['count'] > 0) {
-            newLevels[level].count--;
-            setLevels(newLevels);
-        }
-    };
 
     const getButtonStyles = count => {
         let highestCount = 0;
