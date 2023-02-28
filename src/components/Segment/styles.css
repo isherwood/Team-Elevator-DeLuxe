@@ -1,4 +1,13 @@
+.segment-g path {
+    transition: all 0.3s;
+}
+
+.segment-g path:hover {
+    transform: scale(1.05);
+}
+
 .segment-label {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
+    pointer-events: none;
 }

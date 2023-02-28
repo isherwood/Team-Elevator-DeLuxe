@@ -22,22 +22,36 @@ const describeSlice = (x, y, radius, startAngle, endAngle) => {
     ].join(" ");
 };
 
-const path = (degrees, radius, order) => {
+const segmentPath = (degrees, radius, order) => {
     degrees = parseFloat(degrees);
-    return describeSlice(0, 0, radius, degrees * order, degrees * order + degrees) + 'Z';
+    return describeSlice(0, 0, radius, degrees * order - degrees, degrees * order) + 'Z';
 };
 
-const segmentStyles = (angle, index) => {
-    return {'transform': 'rotate(' + (angle * index + angle / 2 - 90) + 'deg)'};
+const segmentStyles = (angle, index, count) => {
+    if (index / count < 0.5) {
+        return {'transform': 'rotate(' + (angle * index + angle / 2 - 90 - angle) + 'deg) ' +
+                'translateX(-1rem) ' +
+                'translateZ(0)'};
+    }
+
+    return {
+        'transform': 'rotate(' + (angle * index + angle / 2 + 90 - angle) + 'deg) ' +
+            'translateX(calc(-100% + 1rem)) ' +
+            'translateZ(0)'
+    };
 }
 
-export const Segment = props =>
+const textAnchor = (index, count) => {
+    return (index + 1) / count < 0.5 ? 'end' : 'start'
+}
+
+const Segment = props =>
     <g className='segment-g'
        transform={'translate(' + props.radius + ',' + props.radius + ')'}
        stroke="props.color" strokeWidth="2">
-        <path d={path(props.degrees, props.radius, props.index + 1)} fill={props.color}/>
-        <text className='segment-label' x='490' y='.75rem' textAnchor='end'
-              style={segmentStyles(props.degrees, props.index + 1)}>{props.label}</text>
+        <path d={segmentPath(props.degrees, props.radius, props.index + 1)} fill={props.color}/>
+        <text className='segment-label' x='500' y='.65rem' textAnchor={textAnchor(props.index, props.count)}
+              style={segmentStyles(props.degrees, props.index + 1, props.count)}>{props.label}</text>
     </g>;
 
 export default Segment;
