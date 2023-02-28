@@ -6,47 +6,47 @@ import Segment from "../Segment/Segment";
 
 const Ring = () => {
     const [segments, setSegments] = useState([
-        {id: 'calm, grateful', color: 'pink'},
-        {id: 'present, grounded', color: 'orange'},
-        {id: 'accepting, kind', color: 'blue'},
-        {id: 'inspired, moved', color: 'yellow'},
-        {id: 'in awe, proud', color: 'red'},
-        {id: 'challenged, motivated', color: 'green'},
-        {id: 'avoiding, averse', color: 'lightblue'},
-        {id: 'awful, nauseous', color: 'lightgray'},
-        {id: 'uncomfortable, self-conscious', color: 'brown'},
-        {id: 'lost, purposeless', color: 'tan'},
-        {id: 'tired, exhausted', color: 'salmon'},
-        {id: 'bored, numb', color: 'teal'},
-        {id: 'worried, anxious', color: 'lightgreen'},
-        {id: 'busy, overwhelmed', color: 'gray'},
-        {id: 'insignificant, unappreciated', color: 'wheat'},
-        {id: 'reactive, defensive', color: 'purple'},
-        {id: 'frustrated, irritated', color: 'maroon'},
-        {id: 'tense, angry', color: 'violet'}
+        {id: 'calm, grateful', color: '#e9eca1'},
+        {id: 'present, grounded', color: '#e8ec77'},
+        {id: 'accepting, kind', color: '#e8ed51'},
+        {id: 'inspired, moved', color: '#a1e9ec'},
+        {id: 'in awe, proud', color: '#77e9ec'},
+        {id: 'challenged, motivated', color: '#51e9ed'},
+        {id: 'avoiding, averse', color: '#a1ecba'},
+        {id: 'awful, nauseous', color: '#77ec9e'},
+        {id: 'uncomfortable, self-conscious', color: '#51ed82'},
+        {id: 'lost, purposeless', color: '#a1cbec'},
+        {id: 'tired, exhausted', color: '#77b8ec'},
+        {id: 'bored, numb', color: '#51abed'},
+        {id: 'worried, anxious', color: '#c7a1ec'},
+        {id: 'busy, overwhelmed', color: '#b277ec'},
+        {id: 'insignificant, unappreciated', color: '#a251ed'},
+        {id: 'reactive, defensive', color: '#ecaba1'},
+        {id: 'frustrated, irritated', color: '#f08776'},
+        {id: 'tense, angry', color: '#ed6851'}
     ]);
 
-    const incrementSegment = segment => {
+    const incrementSegment = index => {
         const newSegments = [...segments];
 
-        if (newSegments[segment]['count']) {
-            newSegments[segment].count++;
+        if (newSegments[index]['count']) {
+            newSegments[index].count++;
         } else {
-            newSegments[segment]['count'] = 1;
+            newSegments[index]['count'] = 1;
         }
 
         setSegments(newSegments);
     };
 
-    // const decrementSegment = (event, segment) => {
-    //     event.stopPropagation();
-    //     const newSegments = [...segments];
-    //
-    //     if (newSegments[segment]['count'] > 0) {
-    //         newSegments[segment].count--;
-    //         setSegments(newSegments);
-    //     }
-    // };
+    const decrementSegment = (event, index) => {
+        event.stopPropagation();
+        const newSegments = [...segments];
+
+        if (newSegments[index]['count'] > 0) {
+            newSegments[index].count--;
+            setSegments(newSegments);
+        }
+    };
 
     return (
         <Col className='elevator-col position-relative overflow-hidden'>
@@ -55,9 +55,12 @@ const Ring = () => {
                     <circle cx='500' cy='500' r='50%' fill='#eee'></circle>
                     {segments.map((segment, index) => (
                         <Segment key={segment.id} degrees={360 / segments.length} radius='500' index={index}
-                                 count={segments.length} color={segment.color} label={segment.id}
-                                 onClick={incrementSegment}></Segment>
+                                 segments={segments.length} count={segment.count}
+                                 color={segment.color} label={segment.id}
+                                 incrementSegment={() => incrementSegment(index)}
+                                 decrementSegment={event => decrementSegment(event, index)}></Segment>
                     ))}
+                    <circle cx='500' cy='500' r='5%' fill='#fff'></circle>
                 </svg>
             </div>
         </Col>

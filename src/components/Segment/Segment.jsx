@@ -27,31 +27,59 @@ const segmentPath = (degrees, radius, order) => {
     return describeSlice(0, 0, radius, degrees * order - degrees, degrees * order) + 'Z';
 };
 
-const segmentStyles = (angle, index, count) => {
-    if (index / count < 0.5) {
-        return {'transform': 'rotate(' + (angle * index + angle / 2 - 90 - angle) + 'deg) ' +
-                'translateX(-1rem) ' +
-                'translateZ(0)'};
+const countStyles = (angle, index, count) => {
+    const position = index + 1;
+
+    if (position / count * 360 < 180) {
+        return {
+            'transform': 'rotate(' + (angle * position + angle / 2 - 90 - angle) + 'deg) ' +
+                'translateX(-2rem) ' +
+                'translateZ(0)'
+        };
     }
 
     return {
-        'transform': 'rotate(' + (angle * index + angle / 2 + 90 - angle) + 'deg) ' +
+        'transform': 'rotate(' + (angle * position + angle / 2 + 90 - angle) + 'deg) ' +
+            'translateX(calc(-100% + 2rem)) ' +
+            'translateZ(0)'
+    };
+}
+
+const labelStyles = (angle, index, count) => {
+    const position = index + 1;
+
+    if (position / count * 360 < 180) {
+        return {
+            'transform': 'rotate(' + (angle * position + angle / 2 - 90 - angle) + 'deg) ' +
+                'translateX(-1rem) ' +
+                'translateZ(0)'
+        };
+    }
+
+    return {
+        'transform': 'rotate(' + (angle * position + angle / 2 + 90 - angle) + 'deg) ' +
             'translateX(calc(-100% + 1rem)) ' +
             'translateZ(0)'
     };
 }
 
 const textAnchor = (index, count) => {
-    return (index + 1) / count < 0.5 ? 'end' : 'start'
+    return (index + 1) / count * 360 < 180 ? 'end' : 'start'
 }
 
 const Segment = props =>
     <g className='segment-g'
        transform={'translate(' + props.radius + ',' + props.radius + ')'}
        stroke="props.color" strokeWidth="2">
-        <path d={segmentPath(props.degrees, props.radius, props.index + 1)} fill={props.color}/>
-        <text className='segment-label' x='500' y='.65rem' textAnchor={textAnchor(props.index, props.count)}
-              style={segmentStyles(props.degrees, props.index + 1, props.count)}>{props.label}</text>
+        <path d={segmentPath(props.degrees, props.radius, props.index + 1)} fill={props.color}
+              onClick={props.incrementSegment}/>
+        {props.count > 0 &&
+            <text className='segment-count' x='500' y='2.9rem' textAnchor={textAnchor(props.index, props.segments)}
+                  style={countStyles(props.degrees, props.index, props.segments)}
+                  onClick={props.decrementSegment}>{props.count}</text>
+        }
+        <text className='segment-label' x='500' y='.65rem' textAnchor={textAnchor(props.index, props.segments)}
+              style={labelStyles(props.degrees, props.index, props.segments)}>{props.label}</text>
     </g>;
 
 export default Segment;

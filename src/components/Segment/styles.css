@@ -1,9 +1,21 @@
 .segment-g path {
     transition: all 0.3s;
+    cursor: pointer;
 }
 
 .segment-g path:hover {
     transform: scale(1.05);
+}
+
+.segment-count {
+    font-size: 8rem;
+    opacity: 0.75;
+    fill: #fff;
+    cursor: pointer;
+}
+
+.segment-count:hover {
+    opacity: 1;
 }
 
 .segment-label {
