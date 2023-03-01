@@ -43,7 +43,7 @@ const textAnchor = (index, count) => {
     return (index + 1) / count * 360 <= 180 ? 'end' : 'start'
 }
 
-const Segment = props =>
+const Segment = props => (
     <g className='segment-g'
        transform={'translate(' + props.radius + ',' + props.radius + ')'}>
         <path d={Utilities.segmentPath(props.degrees, props.radius - 50, props.index + 1)} fill={props.color}
@@ -63,6 +63,7 @@ const Segment = props =>
                   style={countStyles(props.degrees, props.index, props.segments)}
                   onClick={props.decrementSegment}>{props.count}</text>
         }
-    </g>;
+    </g>
+);
 
 export default Segment;

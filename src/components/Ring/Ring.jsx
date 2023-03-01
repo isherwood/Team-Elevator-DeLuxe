@@ -2,17 +2,17 @@ import React, {useState} from "react";
 import {Col} from "react-bootstrap";
 
 import './styles.css';
-import Segment from "../Segment/Segment";
 import Sector from "../Sector/Sector";
+import Segment from "../Segment/Segment";
 
 const Ring = () => {
     const [sectors] = useState([
-        {name: 'Joy', color: '#e8ec77'},
-        {name: 'Genius', color: '#77e9ec'},
-        {name: 'Disgust', color: '#77ec9e'},
-        {name: 'Sadness', color: '#77b8ec'},
-        {name: 'Fear', color: '#b277ec'},
-        {name: 'Anger', color: '#f08776'}
+        {name: 'Joy, Dignity, Resilience', color: '#e8ec77'},
+        {name: 'Genius, Intuition, Courage', color: '#77e9ec'},
+        {name: 'Disgust, Shame, Aversion', color: '#77ec9e'},
+        {name: 'Sadness, Isolation, Grief', color: '#77b8ec'},
+        {name: 'Fear, Fragility, Vulnerability', color: '#b277ec'},
+        {name: 'Anger, Reactivity, Rage', color: '#f08776'}
     ])
 
     const [segments, setSegments] = useState([
@@ -62,10 +62,9 @@ const Ring = () => {
         <Col className='elevator-col position-relative overflow-hidden'>
             <div className='position-absolute start-0 end-0 h-100 p-3'>
                 <svg className='ring-svg' width='100%' height='100%' viewBox='0 0 1000 1000'>
-                    <circle cx='500' cy='500' r='50%' fill='#eee'></circle>
-
                     {sectors.map((sector, index) => (
                         <Sector key={sector.name} degrees={360 / sectors.length} radius='500' index={index}
+                                sectors={sectors.length}
                                 segments={segments.length}
                                 color={sector.color} label={sector.name}
                                 incrementSegment={() => incrementSegment(index)}

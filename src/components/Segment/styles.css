@@ -3,8 +3,16 @@
     cursor: pointer;
 }
 
-.segment-g path:hover {
-    transform: scale(1.05);
+.segment-g text {
+    transition: all 0.3s;
+}
+
+.segment-g path:hover ~ text.segment-count {
+    opacity: 0.15;
+}
+
+.segment-g path:hover ~ text.segment-label {
+    fill: #fff;
 }
 
 .segment-count {
@@ -19,7 +27,7 @@
     cursor: pointer;
 }
 
-.segment-count-over:hover  {
+.segment-count-over:hover {
     opacity: 1;
 }
 
