@@ -8,7 +8,7 @@
 }
 
 .segment-count {
-    font-size: 8rem;
+    font-size: 6rem;
     opacity: 0.75;
     fill: #fff;
 }
@@ -24,7 +24,7 @@
 }
 
 .segment-label {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: bold;
     pointer-events: none;
 }

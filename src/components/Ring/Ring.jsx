@@ -3,8 +3,18 @@ import {Col} from "react-bootstrap";
 
 import './styles.css';
 import Segment from "../Segment/Segment";
+import Sector from "../Sector/Sector";
 
 const Ring = () => {
+    const [sectors] = useState([
+        {name: 'Joy', color: '#e8ec77'},
+        {name: 'Genius', color: '#77e9ec'},
+        {name: 'Disgust', color: '#77ec9e'},
+        {name: 'Sadness', color: '#77b8ec'},
+        {name: 'Fear', color: '#b277ec'},
+        {name: 'Anger', color: '#f08776'}
+    ])
+
     const [segments, setSegments] = useState([
         {id: 'calm, grateful', color: '#e9eca1'},
         {id: 'present, grounded', color: '#e8ec77'},
@@ -50,9 +60,18 @@ const Ring = () => {
 
     return (
         <Col className='elevator-col position-relative overflow-hidden'>
-            <div className='position-absolute start-0 end-0 h-100 p-4'>
+            <div className='position-absolute start-0 end-0 h-100 p-3'>
                 <svg className='ring-svg' width='100%' height='100%' viewBox='0 0 1000 1000'>
                     <circle cx='500' cy='500' r='50%' fill='#eee'></circle>
+
+                    {sectors.map((sector, index) => (
+                        <Sector key={sector.name} degrees={360 / sectors.length} radius='500' index={index}
+                                segments={segments.length}
+                                color={sector.color} label={sector.name}
+                                incrementSegment={() => incrementSegment(index)}
+                                decrementSegment={event => decrementSegment(event, index)}></Sector>
+                    ))}
+
                     {segments.map((segment, index) => (
                         <Segment key={segment.id} degrees={360 / segments.length} radius='500' index={index}
                                  segments={segments.length} count={segment.count}
@@ -60,7 +79,9 @@ const Ring = () => {
                                  incrementSegment={() => incrementSegment(index)}
                                  decrementSegment={event => decrementSegment(event, index)}></Segment>
                     ))}
+
                     <circle cx='500' cy='500' r='5%' fill='#fff'></circle>
+                    <circle cx="500" cy="500" r="450" stroke="#fff" strokeWidth="5" fill="none" />
                 </svg>
             </div>
         </Col>
