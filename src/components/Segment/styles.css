@@ -21,9 +21,9 @@
     fill: #fff;
 }
 
+
 .segment-count-over {
     opacity: 0;
-    transition: all 0.3s;
     cursor: pointer;
 }
 
