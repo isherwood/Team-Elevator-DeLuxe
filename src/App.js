@@ -30,12 +30,6 @@ function App() {
 
                     <Offcanvas.Body>
                         <p>Click a ring segment to increase its count. Click a count to reduce it.</p>
-
-                        {/*<Form.Group className='mb-3'>*/}
-                        {/*    <Form.Check type="checkbox" id='randomizePlayersCheckbox' label="Show team elevation"*/}
-                        {/*                defaultChecked={showElevator}*/}
-                        {/*                onClick={e => setShowElevator(e.currentTarget.checked)}></Form.Check>*/}
-                        {/*</Form.Group>*/}
                     </Offcanvas.Body>
                 </Offcanvas>
             </Row>
