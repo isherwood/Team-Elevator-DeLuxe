@@ -63,24 +63,29 @@ const Ring = () => {
             <div className='position-absolute start-0 end-0 h-100 p-3'>
                 <svg className='ring-svg' width='100%' height='100%' viewBox='0 0 1000 1000'>
                     {sectors.map((sector, index) => (
-                        <Sector key={sector.name} degrees={360 / sectors.length} radius='500' index={index}
+                        <Sector key={sector.name}
+                                degrees={360 / sectors.length} radius='500' index={index}
                                 sectors={sectors.length}
                                 segments={segments.length}
-                                color={sector.color} label={sector.name}
+                                reverse={index === 2 || index === 3}
+                                color={sector.color}
+                                label={sector.name}
                                 incrementSegment={() => incrementSegment(index)}
                                 decrementSegment={event => decrementSegment(event, index)}></Sector>
                     ))}
 
                     {segments.map((segment, index) => (
-                        <Segment key={segment.id} degrees={360 / segments.length} radius='500' index={index}
+                        <Segment key={segment.id}
+                                 degrees={360 / segments.length} radius='500' index={index}
                                  segments={segments.length} count={segment.count}
-                                 color={segment.color} label={segment.id}
+                                 color={segment.color}
+                                 label={segment.id}
                                  incrementSegment={() => incrementSegment(index)}
                                  decrementSegment={event => decrementSegment(event, index)}></Segment>
                     ))}
 
                     <circle cx='500' cy='500' r='5%' fill='#fff'></circle>
-                    <circle cx="500" cy="500" r="450" stroke="#fff" strokeWidth="5" fill="none" />
+                    <circle cx="500" cy="500" r="450" stroke="#fff" strokeWidth="5" fill="none"/>
                 </svg>
             </div>
         </Col>
