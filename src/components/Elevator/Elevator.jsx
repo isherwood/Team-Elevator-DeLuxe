@@ -1,11 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col} from "react-bootstrap";
+import {Button, Col, Modal} from "react-bootstrap";
 import {GiElevator} from "react-icons/gi";
 
 import './styles.css';
 
 const Elevator = props => {
-    const [levels, setLevels] = useState([
+
+    // get property from local storage object
+    const getItem = key => {
+        const data = JSON.parse(localStorage.getItem('TeamElevatorDeLuxe'));
+        return data ? data[key] : null;
+    }
+
+    const [levels, setLevels] = useState(getItem('levels') || [
         {id: 'grateful'},
         {id: 'wise, insightful'},
         {id: 'creative, innovative'},
@@ -27,6 +34,7 @@ const Elevator = props => {
         {id: 'depressed'}
     ]);
     const [elevatorHeight, setElevatorHeight] = useState(0);
+    const [showContinueModal, setShowContinueModal] = useState(false);
 
     const incrementLevel = level => {
         const newLevels = [...levels];
@@ -76,16 +84,9 @@ const Elevator = props => {
     }
 
     useEffect(() => {
-        let lowestLevel = 0;
         let totalCount = 0;
         let totalWeight = 0;
         let height;
-
-        levels.forEach((level, index) => {
-            if (level.count > 0) {
-                if (!lowestLevel) lowestLevel = index;
-            }
-        });
 
         levels.forEach((level, index) => {
             if (level.count > 0) {
@@ -98,7 +99,35 @@ const Elevator = props => {
         if (isNaN(height) || height < 0) height = 0;
 
         setElevatorHeight(height);
+
+        // set state data in local storage
+        window.localStorage.setItem('TeamElevatorDeLuxe', JSON.stringify({
+            levels: levels
+        }))
     }, [levels]);
+
+    const handleContinueModalYes = () => {
+        setShowContinueModal(false);
+    }
+
+    const handleContinueModalNo = () => {
+        setShowContinueModal(false);
+        localStorage.removeItem('TeamElevatorDeLuxe');
+        const resetLevels = levels;
+
+        resetLevels.forEach(level => {
+            level.count = undefined;
+        });
+
+        setLevels(resetLevels);
+    }
+
+    useEffect(() => {
+        // check for saved game and prompt for continuation
+        if (getItem('levels').filter(l => l.count > 0).length > 0) {
+            setShowContinueModal(true);
+        }
+    }, []);
 
     return (
         <>
@@ -128,6 +157,19 @@ const Elevator = props => {
                     </div>
                 }
             </Col>
+
+            <Modal show={showContinueModal} onHide={handleContinueModalNo}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Elevator Data Found</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>Would you like to continue where you left off?</Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleContinueModalYes}>Yes</Button>
+                    <Button variant="secondary" onClick={handleContinueModalNo}>No</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
