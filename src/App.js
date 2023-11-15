@@ -13,27 +13,29 @@ function App() {
         return data ? data[key] : null;
     }
 
-    const [levels, setLevels] = useState(getItem('levels') || [
-        {id: 'grateful'},
-        {id: 'wise, insightful'},
-        {id: 'creative, innovative'},
-        {id: 'resourceful'},
-        {id: 'hopeful, optimistic'},
-        {id: 'appreciative'},
-        {id: 'patient, understanding'},
-        {id: 'sense of humor'},
-        {id: 'flexible, adaptive'},
-        {id: 'curious, interested'},
-        {id: 'impatient, frustrated'},
-        {id: 'irritated, bothered'},
-        {id: 'worried, anxious'},
-        {id: 'defensive, insecure'},
-        {id: 'judgemental, blaming'},
-        {id: 'self-righteous'},
-        {id: 'stressed, burned-out'},
-        {id: 'angry, hostile'},
-        {id: 'depressed'}
-    ]);
+    const origLevels = [
+        {label: 'grateful'},
+        {label: 'wise, insightful'},
+        {label: 'creative, innovative'},
+        {label: 'resourceful'},
+        {label: 'hopeful, optimistic'},
+        {label: 'appreciative'},
+        {label: 'patient, understanding'},
+        {label: 'sense of humor'},
+        {label: 'flexible, adaptive'},
+        {label: 'curious, interested'},
+        {label: 'impatient, frustrated'},
+        {label: 'irritated, bothered'},
+        {label: 'worried, anxious'},
+        {label: 'defensive, insecure'},
+        {label: 'judgemental, blaming'},
+        {label: 'self-righteous'},
+        {label: 'stressed, burned-out'},
+        {label: 'angry, hostile'},
+        {label: 'depressed'}
+    ];
+
+    const [levels, setLevels] = useState(getItem('levels') || origLevels);
     const [showOffCanvas, setShowOffCanvas] = useState(false);
     const [showElevator, setShowElevator] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
@@ -73,27 +75,34 @@ function App() {
         localStorage.removeItem('TeamElevatorDeLuxe');
         const resetLevels = levels;
 
-        resetLevels.forEach(level => {
+        resetLevels.forEach((level, i) => {
+            level.label = origLevels[i].label;
             level.count = undefined;
         });
 
         setLevels(resetLevels);
     }
 
-    const handleEditModalSubmit = () => {
-        // update levels
+    const updateLevel = (e, i) => {
+        let newLevels = [...levels];
+        newLevels[i].label = e.currentTarget.value;
+        newLevels[i].labelChanged = e.currentTarget.value !== levels[i].label;
 
-
-        setShowEditModal(false);
-    }
-
-    const handleEditModalCancel = () => {
-        setShowEditModal(false);
+        setLevels(newLevels);
     }
 
     useEffect(() => {
+
+        // set state data in local storage
+        window.localStorage.setItem('TeamElevatorDeLuxe', JSON.stringify({
+            levels: levels
+        }))
+    }, [levels]);
+
+
+    useEffect(() => {
         // check for saved game and prompt for continuation
-        if (getItem('levels').filter(l => l.count > 0).length > 0) {
+        if (getItem('levels').filter(l => l.count > 0 || l.labelChanged).length > 0) {
             setShowContinueModal(true);
         }
     }, []);
@@ -158,18 +167,23 @@ function App() {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showEditModal} onHide={handleEditModalCancel}>
+            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Elevator Levels</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-
+                    {levels.map((level, index) => (
+                        <Form.Control defaultValue={level.label}
+                                      key={index}
+                                      size='sm'
+                                      className='mb-1'
+                                      onChange={event => updateLevel(event, index)}/>
+                    ))}
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleEditModalSubmit}>Save</Button>
-                    <Button variant="secondary" onClick={handleEditModalCancel}>Cancel</Button>
+                    <Button variant="secondary" onClick={() => setShowEditModal(false)}>Done</Button>
                 </Modal.Footer>
             </Modal>
         </>

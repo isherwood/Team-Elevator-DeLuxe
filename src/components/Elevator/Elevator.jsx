@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Modal} from "react-bootstrap";
+import {Button, Col} from "react-bootstrap";
 import {GiElevator} from "react-icons/gi";
 
 import './styles.css';
@@ -48,11 +48,6 @@ const Elevator = props => {
         if (isNaN(height) || height < 0) height = 0;
 
         setElevatorHeight(height);
-
-        // set state data in local storage
-        window.localStorage.setItem('TeamElevatorDeLuxe', JSON.stringify({
-            levels: props.levels
-        }))
     }, [props.levels]);
 
     return (
@@ -60,7 +55,8 @@ const Elevator = props => {
             <Col className='elevator-col col-auto d-flex'>
                 <div className='elevator-list d-grid text-center'>
                     {props.levels.map((level, index) => (
-                        <Button key={index} variant='light' className='level-btn py-0 position-relative overflow-hidden'
+                        <Button key={index} variant='light'
+                                className='level-btn py-0 position-relative overflow-hidden'
                                 onClick={() => props.incrementLevel(index)}>
                             <div className='btn-bg' style={getButtonStyles(level.count)}></div>
 
@@ -69,7 +65,7 @@ const Elevator = props => {
                                 <b className='count-pill badge pill text-dark'>{level.count > 0 && level.count}</b>
                             </div>
 
-                            <div className='position-relative my-1'>{level.id}</div>
+                            <div className='position-relative my-1'>{level.label}</div>
                         </Button>
                     ))}
                 </div>
