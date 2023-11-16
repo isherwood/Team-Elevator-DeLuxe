@@ -131,10 +131,11 @@ function App() {
                             <Form.Group className='mb-3'>
                                 <Form.Check type="checkbox" id='randomizePlayersCheckbox' label="Show team elevation"
                                             defaultChecked={showElevator}
-                                            onClick={e => setShowElevator(e.currentTarget.checked)}></Form.Check>
+                                            onClick={e => setShowElevator(e.currentTarget.checked)}/>
                             </Form.Group>
 
-                            <Button type='primary' onClick={() => setShowEditModal(true)}>Edit Levels</Button>
+                            <Button type='primary' onClick={() => setShowEditModal(true)}>
+                                Edit Level Labels</Button>
                         </Offcanvas.Body>
                     </Offcanvas>
                 </Row>
@@ -154,7 +155,9 @@ function App() {
                 </Row>
             </Container>
 
-            <Modal show={showContinueModal} onHide={handleContinueModalNo}>
+            <Modal show={showContinueModal}
+                   backdrop="static"
+                   onHide={handleContinueModalNo}>
                 <Modal.Header closeButton>
                     <Modal.Title>Elevator Data Found</Modal.Title>
                 </Modal.Header>
@@ -177,7 +180,7 @@ function App() {
                         <Form.Control defaultValue={level.label}
                                       key={index}
                                       size='sm'
-                                      className='mb-1'
+                                      className='bg-body-secondary mb-1'
                                       onChange={event => updateLevel(event, index)}/>
                     ))}
                 </Modal.Body>
