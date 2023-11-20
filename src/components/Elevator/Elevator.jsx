@@ -3,26 +3,36 @@ import {Button, Col} from "react-bootstrap";
 import {GiElevator} from "react-icons/gi";
 
 import './styles.css';
+import ColorGradientService from "../../services/ColorGradient";
 
 const Elevator = props => {
     const [elevatorHeight, setElevatorHeight] = useState(0);
+    const [colorArr, setColorArr] = useState(ColorGradientService.generateColors(
+        props.colors[0], props.colors[1], props.levels.length));
 
-    const getButtonStyles = count => {
+    const getButtonStyles = (index, count) => {
         let highestCount = 0;
         let opacity = 0.15;
 
-        if (count > 0) {
-            props.levels.forEach(level => {
-                if (level.count > highestCount) {
-                    highestCount = level.count;
-                }
-            });
+        props.levels.forEach(level => {
+            if (level.count > highestCount) {
+                highestCount = level.count;
+            }
+        });
 
-            opacity = count / highestCount * .5 + .15;
+        if (highestCount === 0) {
+            opacity = 1;
+        } else {
+            if (count > 0) {
+                opacity = count / highestCount * .5 + .15;
+            } else {
+                opacity = 0.15;
+            }
         }
 
         return {
-            opacity: opacity
+            opacity: opacity,
+            backgroundColor: '#' + colorArr[index]
         }
     }
 
@@ -50,6 +60,10 @@ const Elevator = props => {
         setElevatorHeight(height);
     }, [props.levels]);
 
+    useEffect(() => {
+        setColorArr(ColorGradientService.generateColors(props.colors[0], props.colors[1], props.levels.length));
+    }, [props.colors, props.levels]);
+
     return (
         <>
             <Col className='elevator-col col-auto d-flex'>
@@ -58,7 +72,7 @@ const Elevator = props => {
                         <Button key={index} variant='light'
                                 className='level-btn py-0 position-relative overflow-hidden'
                                 onClick={() => props.incrementLevel(index)}>
-                            <div className='btn-bg' style={getButtonStyles(level.count)}></div>
+                            <div className='btn-bg' style={getButtonStyles(index, level.count)}></div>
 
                             <div className='btn-count position-absolute lead'
                                  onClick={event => props.decrementLevel(event, index)}>
