@@ -1,11 +1,26 @@
 import React, {useEffect, useState} from "react";
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import {Button, Col, Container, Form, Modal, Offcanvas, Row} from 'react-bootstrap';
 import {TfiHelpAlt} from "react-icons/tfi";
 import {IoIosColorPalette} from "react-icons/io";
 import {GiHamburgerMenu} from "react-icons/gi";
 
 import './App.css';
-import Elevator from "./components/Elevator/Elevator";
+import Elevator from './components/Elevator/Elevator';
+import SortableLevel from './components/SortableLevel/SortableLevel';
 
 function App() {
 
@@ -16,37 +31,45 @@ function App() {
     }
 
     const origLevels = [
-        {label: 'grateful'},
-        {label: 'wise, insightful'},
-        {label: 'creative, innovative'},
-        {label: 'resourceful'},
-        {label: 'hopeful, optimistic'},
-        {label: 'appreciative'},
-        {label: 'patient, understanding'},
-        {label: 'sense of humor'},
-        {label: 'flexible, adaptive'},
-        {label: 'curious, interested'},
-        {label: 'impatient, frustrated'},
-        {label: 'irritated, bothered'},
-        {label: 'worried, anxious'},
-        {label: 'defensive, insecure'},
-        {label: 'judgemental, blaming'},
-        {label: 'self-righteous'},
-        {label: 'stressed, burned-out'},
-        {label: 'angry, hostile'},
-        {label: 'depressed'}
+        {id: 1, label: 'grateful'},
+        {id: 2, label: 'wise, insightful'},
+        {id: 3, label: 'creative, innovative'},
+        {id: 4, label: 'resourceful'},
+        {id: 5, label: 'hopeful, optimistic'},
+        {id: 6, label: 'appreciative'},
+        {id: 7, label: 'patient, understanding'},
+        {id: 8, label: 'sense of humor'},
+        {id: 9, label: 'flexible, adaptive'},
+        {id: 10, label: 'curious, interested'},
+        {id: 11, label: 'impatient, frustrated'},
+        {id: 12, label: 'irritated, bothered'},
+        {id: 13, label: 'worried, anxious'},
+        {id: 14, label: 'defensive, insecure'},
+        {id: 15, label: 'judgemental, blaming'},
+        {id: 16, label: 'self-righteous'},
+        {id: 17, label: 'stressed, burned-out'},
+        {id: 18, label: 'angry, hostile'},
+        {id: 19, label: 'depressed'}
     ];
 
-    const origColors = ['0567F2', 'FA49D7'];
+    const origColors = ['569BFB', '6FFF5C'];
 
     const [levels, setLevels] = useState(getItem('levels') || origLevels);
+    const [levelsChanged, setLevelsChanged] = useState(getItem('levelsChanged') || false);
     const [colors, setColors] = useState(getItem('colors') || origColors);
+    const [colorsChanged, setColorsChanged] = useState(getItem('colorsChanged') || false);
     const [showOffCanvas, setShowOffCanvas] = useState(false);
     const [showElevator, setShowElevator] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
     const [showLabelModal, setShowLabelModal] = useState(false);
     const [showColorModal, setShowColorModal] = useState(false);
-    const [colorChanged, setColorChanged] = useState(getItem('colorChanged') || false);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
 
     const handleHideOffCanvas = () => setShowOffCanvas(false);
     const handleShowOffCanvas = () => setShowOffCanvas(true);
@@ -80,24 +103,27 @@ function App() {
     const handleContinueModalNo = () => {
         setShowContinueModal(false);
         localStorage.removeItem('TeamElevatorDeLuxe');
-        const resetLevels = levels;
 
-        resetLevels.forEach((level, i) => {
-            level.label = origLevels[i].label;
-            level.count = undefined;
-        });
-
-        setLevels(resetLevels);
+        setLevels(origLevels);
+        setLevelsChanged(false);
         setColors(origColors);
-        setColorChanged(false);
+        setColorsChanged(false);
     }
 
     const updateLevel = (e, i) => {
         let newLevels = [...levels];
         newLevels[i].label = e.currentTarget.value;
-        newLevels[i].labelChanged = e.currentTarget.value !== levels[i].label;
 
         setLevels(newLevels);
+        setLevelsChanged(true);
+    }
+
+    const removeLevel = (event, index) => {
+        const newLevels = [...levels];
+        newLevels.splice(index, 1);
+
+        setLevels(newLevels);
+        setLevelsChanged(true);
     }
 
     const setStartColor = event => {
@@ -105,7 +131,7 @@ function App() {
         newColors[0] = event.currentTarget.value.replace('#', '');
 
         setColors(newColors);
-        setColorChanged(true);
+        setColorsChanged(true);
     }
 
     const setEndColor = event => {
@@ -113,7 +139,20 @@ function App() {
         newColors[1] = event.currentTarget.value.replace('#', '');
 
         setColors(newColors);
-        setColorChanged(true);
+        setColorsChanged(true);
+    }
+
+    const handleDragEnd = event => {
+        const {active, over} = event;
+
+        if (active.id !== over.id) {
+            setLevels(levels => {
+                const oldIndex = levels.indexOf(active.id);
+                const newIndex = levels.indexOf(over.id);
+
+                return arrayMove(levels, oldIndex, newIndex);
+            });
+        }
     }
 
     useEffect(() => {
@@ -121,15 +160,17 @@ function App() {
         // set state data in local storage
         window.localStorage.setItem('TeamElevatorDeLuxe', JSON.stringify({
             colors: colors,
-            colorChanged: colorChanged,
-            levels: levels
+            colorsChanged: colorsChanged,
+            levels: levels,
+            levelsChanged: levelsChanged
         }))
-    }, [colors, colorChanged, levels]);
+    }, [colors, colorsChanged, levels, levelsChanged]);
 
     useEffect(() => {
         // check for saved game and prompt for continuation
-        if (getItem('levels').filter(l => l.count > 0 || l.labelChanged).length > 0 ||
-            getItem('colorChanged') === true) {
+        if (getItem('levels').filter(l => l.count > 0).length > 0 ||
+            getItem('levelsChanged') === true ||
+            getItem('colorsChanged') === true) {
             setShowContinueModal(true);
         }
     }, []);
@@ -161,15 +202,15 @@ function App() {
                                             onClick={e => setShowElevator(e.currentTarget.checked)}/>
                             </Form.Group>
 
-                            <div className='d-flex justify-content-evenly gap-2'>
+                            <div className='d-flex justify-content-evenly gap-2 mt-4'>
                                 <Button type='primary' className='w-100'
                                         onClick={() => setShowLabelModal(true)}>
-                                    Edit Level Labels <GiHamburgerMenu className='ms-2 mb-1'/>
+                                    Edit Levels <GiHamburgerMenu className='ms-2 mb-1'/>
                                 </Button>
 
                                 <Button type='primary' className='w-100'
                                         onClick={() => setShowColorModal(true)}>
-                                    Edit Level Colors <IoIosColorPalette className='ms-2 mb-1'/>
+                                    Edit Colors <IoIosColorPalette className='ms-2 mb-1'/>
                                 </Button>
                             </div>
                         </Offcanvas.Body>
@@ -209,17 +250,37 @@ function App() {
 
             <Modal show={showLabelModal} onHide={() => setShowLabelModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Elevator Levels</Modal.Title>
+                    <Modal.Title>Edit Levels</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    {levels.map((level, index) => (
-                        <Form.Control defaultValue={level.label}
-                                      key={index}
-                                      size='sm'
-                                      className='bg-body-secondary mb-1'
-                                      onChange={event => updateLevel(event, index)}/>
-                    ))}
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <SortableContext
+                            items={levels}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            {levels.map((level, index) => (
+                                <SortableLevel key={level.id} id={level.id}>
+                                    <div className='d-flex align-items-start'>
+                                        <Form.Control defaultValue={level.label}
+                                                      size='sm'
+                                                      className='bg-body-secondary mb-1'
+                                                      onChange={event => updateLevel(event, index)}/>
+
+                                        <Button variant='light' size='sm' className='ms-1'
+                                                title='Remove this level'
+                                                onClick={event => {
+                                                    removeLevel(event, index)
+                                                }}>✕</Button>
+                                    </div>
+                                </SortableLevel>
+                            ))}
+                        </SortableContext>
+                    </DndContext>
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -229,7 +290,7 @@ function App() {
 
             <Modal show={showColorModal} onHide={() => setShowColorModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Elevator Colors</Modal.Title>
+                    <Modal.Title>Edit Colors</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
