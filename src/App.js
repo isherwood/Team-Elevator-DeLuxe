@@ -17,6 +17,7 @@ import {Button, Col, Container, Form, Modal, Offcanvas, Row} from 'react-bootstr
 import {TfiHelpAlt} from "react-icons/tfi";
 import {IoIosColorPalette} from "react-icons/io";
 import {GiHamburgerMenu} from "react-icons/gi";
+import {GrClose} from "react-icons/gr";
 
 import './App.css';
 import Elevator from './components/Elevator/Elevator';
@@ -147,8 +148,8 @@ function App() {
 
         if (active.id !== over.id) {
             setLevels(levels => {
-                const oldIndex = levels.indexOf(active.id);
-                const newIndex = levels.indexOf(over.id);
+                const oldIndex = levels.findIndex(lev => lev.id === active.id);
+                const newIndex = levels.findIndex(lev => lev.id === over.id);
 
                 return arrayMove(levels, oldIndex, newIndex);
             });
@@ -265,7 +266,7 @@ function App() {
                         >
                             {levels.map((level, index) => (
                                 <SortableLevel key={level.id} id={level.id}>
-                                    <div className='d-flex align-items-start'>
+                                    <div className='d-flex align-items-start flex-fill'>
                                         <Form.Control defaultValue={level.label}
                                                       size='sm'
                                                       className='bg-body-secondary mb-1'
@@ -275,7 +276,8 @@ function App() {
                                                 title='Remove this level'
                                                 onClick={event => {
                                                     removeLevel(event, index)
-                                                }}>✕</Button>
+                                                }}><GrClose />
+                                        </Button>
                                     </div>
                                 </SortableLevel>
                             ))}

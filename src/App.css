@@ -7,6 +7,10 @@
     animation-timing-function: ease-in-out;
 }
 
+.cursor-drag {
+    cursor: move !important;
+}
+
 @keyframes sideBounce {
     from {
         right: 0;
