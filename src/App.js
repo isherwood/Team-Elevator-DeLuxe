@@ -119,6 +119,21 @@ function App() {
         setLevelsChanged(true);
     }
 
+    const addLevel = event => {
+        const newLevelLabel = event.currentTarget.value;
+
+        if (event.key === 'Enter' && newLevelLabel !== ''
+            && levels.filter(l => l.label === newLevelLabel).length === 0) {
+            const newLevels = [...levels];
+            const newLevelId = Math.max(...levels.map(l => l.id)) + 1;
+
+            newLevels.unshift({id: newLevelId, label: newLevelLabel});
+            setLevels(newLevels);
+            setLevelsChanged(true);
+            event.currentTarget.value = '';
+        }
+    }
+
     const removeLevel = (event, index) => {
         const newLevels = [...levels];
         newLevels.splice(index, 1);
@@ -255,6 +270,10 @@ function App() {
                 </Modal.Header>
 
                 <Modal.Body>
+                    <Form.Control placeholder='Enter a new level label'
+                                  className='bg-body-secondary mb-3'
+                                  onKeyDown={event => addLevel(event)}/>
+
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
@@ -276,7 +295,7 @@ function App() {
                                                 title='Remove this level'
                                                 onClick={event => {
                                                     removeLevel(event, index)
-                                                }}><GrClose />
+                                                }}><GrClose/>
                                         </Button>
                                     </div>
                                 </SortableLevel>
