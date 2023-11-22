@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {Button} from "react-bootstrap";
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {BiMoveVertical} from "react-icons/bi";
 
 const SortableLevel = (props, children) => {
@@ -21,11 +21,14 @@ const SortableLevel = (props, children) => {
     return (
         <div ref={setNodeRef} style={style}>
             <div className='d-flex align-items-start'>
-                <Button variant='light' size='sm' className='me-1 cursor-drag'
-                        title='Drag to sort level'
-                        {...attributes} {...listeners}>
-                    <BiMoveVertical />
-                </Button>
+                <OverlayTrigger
+                    delay='500'
+                    overlay={<Tooltip>Drag to rearrange levels</Tooltip>}>
+                    <Button variant='light' size='sm' className='me-1 cursor-drag'
+                            {...attributes} {...listeners}>
+                        <BiMoveVertical/>
+                    </Button>
+                </OverlayTrigger>
 
                 {props.children}
             </div>

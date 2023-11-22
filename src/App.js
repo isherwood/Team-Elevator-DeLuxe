@@ -13,7 +13,7 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {Button, Col, Container, Form, Modal, Offcanvas, Row} from 'react-bootstrap';
+import {Button, Col, Container, Form, Modal, Offcanvas, OverlayTrigger, Row, Tooltip} from 'react-bootstrap';
 import {TfiHelpAlt} from "react-icons/tfi";
 import {IoIosColorPalette} from "react-icons/io";
 import {GiHamburgerMenu} from "react-icons/gi";
@@ -291,12 +291,15 @@ function App() {
                                                       className='bg-body-secondary mb-1'
                                                       onChange={event => updateLevel(event, index)}/>
 
-                                        <Button variant='light' size='sm' className='ms-1'
-                                                title='Remove this level'
-                                                onClick={event => {
-                                                    removeLevel(event, index)
-                                                }}><GrClose/>
-                                        </Button>
+                                        <OverlayTrigger
+                                            delay='500'
+                                            overlay={<Tooltip>Remove this level</Tooltip>}>
+                                            <Button variant='light' size='sm' className='ms-1'
+                                                    onClick={event => {
+                                                        removeLevel(event, index)
+                                                    }}><GrClose/>
+                                            </Button>
+                                        </OverlayTrigger>
                                     </div>
                                 </SortableLevel>
                             ))}
