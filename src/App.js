@@ -71,7 +71,7 @@ function App() {
     );
 
     const gradientDemoStyles = {
-        background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1]
+        background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1] + ')'
     };
 
     const handleHideOffCanvas = () => setShowOffCanvas(false);
