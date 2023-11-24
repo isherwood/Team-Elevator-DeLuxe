@@ -15,7 +15,6 @@ import {
 } from '@dnd-kit/sortable';
 import {Button, Col, Container, Form, Modal, Offcanvas, OverlayTrigger, Row, Tooltip} from 'react-bootstrap';
 import {TfiHelpAlt} from "react-icons/tfi";
-import {IoIosColorPalette} from "react-icons/io";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GrClose} from "react-icons/gr";
 
@@ -63,7 +62,6 @@ function App() {
     const [showElevator, setShowElevator] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
     const [showLabelModal, setShowLabelModal] = useState(false);
-    const [showColorModal, setShowColorModal] = useState(false);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -71,6 +69,10 @@ function App() {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
+    const gradientDemoStyles = {
+        background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1]
+    };
 
     const handleHideOffCanvas = () => setShowOffCanvas(false);
     const handleShowOffCanvas = () => setShowOffCanvas(true);
@@ -205,30 +207,48 @@ function App() {
                     </Col>
 
                     <Offcanvas placement='end' show={showOffCanvas} onHide={handleHideOffCanvas}>
-                        <Offcanvas.Header closeButton>
-                            <Offcanvas.Title><h2 className='display-6'>Instructions</h2></Offcanvas.Title>
-                        </Offcanvas.Header>
+                        <Offcanvas.Header closeButton/>
 
                         <Offcanvas.Body>
+                            <h2 className='display-6'>Instructions</h2>
                             <p>Click an elevator level to increase its count. Click a count to reduce it.</p>
 
-                            <Form.Group className='mb-3'>
+                            <h2 className='display-6'>Options</h2>
+                            <Form.Group className='my-3'>
                                 <Form.Check type="checkbox" id='randomizePlayersCheckbox' label="Show team elevation"
                                             defaultChecked={showElevator}
                                             onClick={e => setShowElevator(e.currentTarget.checked)}/>
                             </Form.Group>
+                            <div className='d-flex align-items-end mt-4 mb-4'>
+                                <div className='px-2 text-center'>
+                                    <Form.Label htmlFor='startColorInput'>Start color</Form.Label>
+                                    <Form.Control
+                                        type="color"
+                                        id='startColorInput'
+                                        defaultValue={'#' + colors[0]}
+                                        onChange={event => setStartColor(event)}
+                                        className='mx-auto'
+                                    />
+                                </div>
 
-                            <div className='d-flex justify-content-evenly gap-2 mt-4'>
-                                <Button type='primary' className='w-100'
-                                        onClick={() => setShowLabelModal(true)}>
-                                    Edit Levels <GiHamburgerMenu className='ms-2 mb-1'/>
-                                </Button>
+                                <div style={gradientDemoStyles} className='flex-fill mb-2 py-2'></div>
 
-                                <Button type='primary' className='w-100'
-                                        onClick={() => setShowColorModal(true)}>
-                                    Edit Colors <IoIosColorPalette className='ms-2 mb-1'/>
-                                </Button>
+                                <div className='px-2 text-center'>
+                                    <Form.Label htmlFor='endColorInput'>End color</Form.Label>
+                                    <Form.Control
+                                        type="color"
+                                        id='endColorInput'
+                                        defaultValue={'#' + colors[1]}
+                                        onChange={event => setEndColor(event)}
+                                        className='mx-auto'
+                                    />
+                                </div>
                             </div>
+
+                            <Button variant='secondary' className='mt-2 w-100'
+                                    onClick={() => setShowLabelModal(true)}>
+                                Edit Levels <GiHamburgerMenu className='ms-2 mb-1'/>
+                            </Button>
                         </Offcanvas.Body>
                     </Offcanvas>
                 </Row>
@@ -309,42 +329,6 @@ function App() {
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowLabelModal(false)}>Done</Button>
-                </Modal.Footer>
-            </Modal>
-
-            <Modal show={showColorModal} onHide={() => setShowColorModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Colors</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <div className='d-flex justify-content-evenly'>
-                        <div className='text-center'>
-                            <Form.Label htmlFor='startColorInput'>Select a start color</Form.Label>
-                            <Form.Control
-                                type="color"
-                                id='startColorInput'
-                                defaultValue={'#' + colors[0]}
-                                onChange={event => setStartColor(event)}
-                                className='mx-auto'
-                            />
-                        </div>
-
-                        <div>
-                            <Form.Label htmlFor='endColorInput'>Select an end color</Form.Label>
-                            <Form.Control
-                                type="color"
-                                id='endColorInput'
-                                defaultValue={'#' + colors[1]}
-                                onChange={event => setEndColor(event)}
-                                className='mx-auto'
-                            />
-                        </div>
-                    </div>
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowColorModal(false)}>Done</Button>
                 </Modal.Footer>
             </Modal>
         </>
