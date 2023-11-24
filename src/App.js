@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     DndContext,
     closestCenter,
@@ -55,6 +55,7 @@ function App() {
     const origColors = ['569BFB', '6FFF5C'];
 
     const [levels, setLevels] = useState(getItem('levels') || origLevels);
+    const [newLevel, setNewLevel] = useState('');
     const [levelsChanged, setLevelsChanged] = useState(getItem('levelsChanged') || false);
     const [colors, setColors] = useState(getItem('colors') || origColors);
     const [colorsChanged, setColorsChanged] = useState(getItem('colorsChanged') || false);
@@ -73,6 +74,8 @@ function App() {
     const gradientDemoStyles = {
         background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1] + ')'
     };
+
+    const levelInputRef = useRef();
 
     const handleHideOffCanvas = () => setShowOffCanvas(false);
     const handleShowOffCanvas = () => setShowOffCanvas(true);
@@ -122,17 +125,15 @@ function App() {
     }
 
     const addLevel = event => {
-        const newLevelLabel = event.currentTarget.value;
+        event.preventDefault();
 
-        if (event.key === 'Enter' && newLevelLabel !== ''
-            && levels.filter(l => l.label === newLevelLabel).length === 0) {
+        if (newLevel !== '' && levels.filter(l => l.label === newLevel).length === 0) {
             const newLevels = [...levels];
             const newLevelId = Math.max(...levels.map(l => l.id)) + 1;
 
-            newLevels.unshift({id: newLevelId, label: newLevelLabel});
+            newLevels.unshift({id: newLevelId, label: newLevel});
             setLevels(newLevels);
-            setLevelsChanged(true);
-            event.currentTarget.value = '';
+            levelInputRef.current.value = '';
         }
     }
 
@@ -214,11 +215,13 @@ function App() {
                             <p>Click an elevator level to increase its count. Click a count to reduce it.</p>
 
                             <h2 className='display-6'>Options</h2>
+
                             <Form.Group className='my-3'>
                                 <Form.Check type="checkbox" id='randomizePlayersCheckbox' label="Show team elevation"
                                             defaultChecked={showElevator}
                                             onClick={e => setShowElevator(e.currentTarget.checked)}/>
                             </Form.Group>
+
                             <div className='d-flex align-items-end mt-4 mb-4'>
                                 <div className='px-2 text-center'>
                                     <Form.Label htmlFor='startColorInput'>Start color</Form.Label>
@@ -290,9 +293,13 @@ function App() {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Form.Control placeholder='Enter a new level label'
-                                  className='bg-body-secondary mb-3'
-                                  onKeyDown={event => addLevel(event)}/>
+                    <Form onSubmit={event => addLevel(event)}>
+                        <Form.Control ref={levelInputRef}
+                                      placeholder='Enter a new level label'
+                                      className='bg-body-secondary mb-3'
+                                      defaultValue={newLevel}
+                                      onKeyDown={event => setNewLevel(event.currentTarget.value)}/>
+                    </Form>
 
                     <DndContext
                         sensors={sensors}
