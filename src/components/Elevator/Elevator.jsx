@@ -24,7 +24,7 @@ const Elevator = props => {
             opacity = 1;
         } else {
             if (count > 0) {
-                opacity = count / highestCount * .5 + .15;
+                opacity = 0.3 + 0.7 * count / highestCount;
             } else {
                 opacity = 0.15;
             }
