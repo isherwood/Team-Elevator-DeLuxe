@@ -24,7 +24,7 @@ const SortableLevel = (props, children) => {
                 <OverlayTrigger
                     delay='500'
                     overlay={<Tooltip>Drag to rearrange levels</Tooltip>}>
-                    <Button variant='light' size='sm' className='me-1 cursor-drag'
+                    <Button variant='light' size='sm' className='me-1 cursor-drag touch-action-none'
                             {...attributes} {...listeners}>
                         <BiMoveVertical/>
                     </Button>

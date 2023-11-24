@@ -11,6 +11,10 @@
     cursor: move !important;
 }
 
+.touch-action-none {
+    touch-action: none;
+}
+
 @keyframes sideBounce {
     from {
         right: 0;
