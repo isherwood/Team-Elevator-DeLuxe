@@ -17,10 +17,13 @@ import {Button, Col, Container, Form, Modal, Offcanvas, OverlayTrigger, Row, Too
 import {TfiHelpAlt} from "react-icons/tfi";
 import {GiHamburgerMenu} from "react-icons/gi";
 import {GrClose} from "react-icons/gr";
+import {IoColorPalette} from "react-icons/io5";
 
 import './App.css';
 import Elevator from './components/Elevator/Elevator';
 import SortableLevel from './components/SortableLevel/SortableLevel';
+import origLevels from './services/OriginalLevels';
+import presets from './services/PresetThemes';
 
 function App() {
 
@@ -29,28 +32,6 @@ function App() {
         const data = JSON.parse(localStorage.getItem('TeamElevatorDeLuxe'));
         return data ? data[key] : null;
     }
-
-    const origLevels = [
-        {id: 1, label: 'grateful'},
-        {id: 2, label: 'wise, insightful'},
-        {id: 3, label: 'creative, innovative'},
-        {id: 4, label: 'resourceful'},
-        {id: 5, label: 'hopeful, optimistic'},
-        {id: 6, label: 'appreciative'},
-        {id: 7, label: 'patient, understanding'},
-        {id: 8, label: 'sense of humor'},
-        {id: 9, label: 'flexible, adaptive'},
-        {id: 10, label: 'curious, interested'},
-        {id: 11, label: 'impatient, frustrated'},
-        {id: 12, label: 'irritated, bothered'},
-        {id: 13, label: 'worried, anxious'},
-        {id: 14, label: 'defensive, insecure'},
-        {id: 15, label: 'judgemental, blaming'},
-        {id: 16, label: 'self-righteous'},
-        {id: 17, label: 'stressed, burned-out'},
-        {id: 18, label: 'angry, hostile'},
-        {id: 19, label: 'depressed'}
-    ];
 
     const origColors = ['569BFB', '6FFF5C'];
 
@@ -63,6 +44,7 @@ function App() {
     const [showElevator, setShowElevator] = useState(false);
     const [showContinueModal, setShowContinueModal] = useState(false);
     const [showLabelModal, setShowLabelModal] = useState(false);
+    const [showThemeModal, setShowThemeModal] = useState(false);
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -73,6 +55,12 @@ function App() {
 
     const gradientDemoStyles = {
         background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1] + ')'
+    };
+
+    const getPresetStyles = preset => {
+        return {
+            background: 'linear-gradient(to right, #' + preset.start + ', #' + preset.end + ')'
+        }
     };
 
     const levelInputRef = useRef();
@@ -161,6 +149,11 @@ function App() {
         setColorsChanged(true);
     }
 
+    const setPreset = (event, preset) => {
+        setColors([preset.start, preset.end]);
+        setColorsChanged(true);
+    }
+
     const handleDragEnd = event => {
         const {active, over} = event;
 
@@ -228,7 +221,7 @@ function App() {
                                     <Form.Control
                                         type="color"
                                         id='startColorInput'
-                                        defaultValue={'#' + colors[0]}
+                                        value={'#' + colors[0]}
                                         onChange={event => setStartColor(event)}
                                         className='mx-auto'
                                     />
@@ -241,12 +234,17 @@ function App() {
                                     <Form.Control
                                         type="color"
                                         id='endColorInput'
-                                        defaultValue={'#' + colors[1]}
+                                        value={'#' + colors[1]}
                                         onChange={event => setEndColor(event)}
                                         className='mx-auto'
                                     />
                                 </div>
                             </div>
+
+                            <Button variant='secondary' className='mt-2 w-100'
+                                    onClick={() => setShowThemeModal(true)}>
+                                Select a Theme Preset <IoColorPalette className='ms-2 mb-1'/>
+                            </Button>
 
                             <Button variant='secondary' className='mt-2 w-100'
                                     onClick={() => setShowLabelModal(true)}>
@@ -284,6 +282,28 @@ function App() {
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleContinueModalYes}>Yes</Button>
                     <Button variant="secondary" onClick={handleContinueModalNo}>No</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showThemeModal}
+                   onHide={() => setShowThemeModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Select a Theme Preset</Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    {presets.map(preset => (
+                        <Button variant='outline-light' key={preset.name}
+                                style={getPresetStyles(preset)}
+                                onClick={(event) => setPreset(event, preset)}
+                                className='preset-btn w-100 my-2 py-3'>
+                            <b className='text-white'>{preset.name}</b>
+                        </Button>
+                    ))}
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowThemeModal(false)}>Done</Button>
                 </Modal.Footer>
             </Modal>
 

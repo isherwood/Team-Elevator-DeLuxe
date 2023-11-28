@@ -15,6 +15,15 @@
     touch-action: none;
 }
 
+.preset-btn b {
+    transition: all 0.3s;
+}
+
+.preset-btn:hover b {
+    transition: all 0.3s;
+    color: #222 !important;
+}
+
 @keyframes sideBounce {
     from {
         right: 0;
