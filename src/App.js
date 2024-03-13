@@ -318,6 +318,7 @@ function App() {
                                       placeholder='Enter a new level label'
                                       className='bg-body-secondary mb-3'
                                       defaultValue={newLevel}
+                                      autoCapitalize='none'
                                       onKeyDown={event => setNewLevel(event.currentTarget.value)}/>
                     </Form>
 

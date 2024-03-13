@@ -26,7 +26,9 @@ const ColorGradientService = {
         return rgbVal;
     },
 
-    generateColors: function(colorStart, colorEnd, colorCount) {
+    generateColors: function(colors, colorCount) {
+        const colorStart = colors[0];
+        const colorEnd = colors[1];
 
         // The beginning of your gradient
         let start = this.convertToRGB(colorStart);

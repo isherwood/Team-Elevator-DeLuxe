@@ -61,7 +61,7 @@ const Elevator = props => {
     }, [props.levels]);
 
     useEffect(() => {
-        setColorArr(ColorGradientService.generateColors(props.colors[0], props.colors[1], props.levels.length));
+        setColorArr(ColorGradientService.generateColors(props.colors, props.levels.length));
     }, [props.colors, props.levels]);
 
     return (
