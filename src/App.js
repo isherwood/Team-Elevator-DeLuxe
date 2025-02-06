@@ -292,14 +292,18 @@ function App() {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {presets.map(preset => (
-                        <Button variant='outline-light' key={preset.name}
-                                style={getPresetStyles(preset)}
-                                onClick={(event) => setPreset(event, preset)}
-                                className='preset-btn w-100 my-2 py-3'>
-                            <b className='text-white'>{preset.name}</b>
-                        </Button>
-                    ))}
+                    <div className="d-flex flex-wrap justify-content-between">
+                        {presets.map(preset => (
+                            <div className="w-50 px-1">
+                                <Button variant='outline-light' key={preset.name}
+                                        style={getPresetStyles(preset)}
+                                        onClick={(event) => setPreset(event, preset)}
+                                        className='preset-btn w-100 my-1 py-3'>
+                                    <b className='text-white'>{preset.name}</b>
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
                 </Modal.Body>
 
                 <Modal.Footer>
