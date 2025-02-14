@@ -237,13 +237,13 @@ function App() {
                             <h2 className='display-6'>Options</h2>
 
                             <Form.Group className='my-3'>
-                                <Form.Check type="checkbox" label="Show team elevation"
+                                <Form.Check type="checkbox" label="Show team elevation" id="elevationCheck"
                                             defaultChecked={showElevator}
                                             onClick={e => setShowElevator(e.currentTarget.checked)}/>
                             </Form.Group>
 
                             <Form.Group className='my-3'>
-                                <Form.Check type="checkbox" label="Randomize levels"
+                                <Form.Check type="checkbox" label="Randomize levels" id="randomizeCheck"
                                             defaultChecked={randomizeLevels}
                                             onClick={e => orderLevels(e.currentTarget.checked)}/>
                             </Form.Group>
