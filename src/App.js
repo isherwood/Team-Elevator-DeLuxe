@@ -109,6 +109,10 @@ function App() {
         let newLevels = [...levels];
         newLevels[i].label = e.currentTarget.value;
 
+        if (newLevels[i].label === '') {
+            newLevels.splice(i, 1);
+        }
+
         setLevels(newLevels);
         setLevelsChanged(true);
     }
