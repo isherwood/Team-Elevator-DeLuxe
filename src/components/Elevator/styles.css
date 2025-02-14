@@ -1,5 +1,5 @@
 .btn.level-btn {
-    padding: 0 3rem;
+    padding: 0 4rem;
 }
 
 .btn.level-btn:hover:not(:has(.count-pill:hover)):after {
@@ -47,78 +47,5 @@
     width: 100%;
     top: 0;
     height: 100%;
-    background-color: #0567F2;
     transition: all 0.5s;
-}
-
-.level-btn:nth-child(2) .btn-bg {
-    background-color: #157ADB;
-}
-
-.level-btn:nth-child(3) .btn-bg {
-    background-color: #1F87CD;
-}
-
-.level-btn:nth-child(4) .btn-bg {
-    background-color: #2E99B7;
-}
-
-.level-btn:nth-child(5) .btn-bg {
-    background-color: #3AA8A6;
-}
-
-.level-btn:nth-child(6) .btn-bg {
-    background-color: #49B992;
-}
-
-.level-btn:nth-child(7) .btn-bg {
-    background-color: #56C87E;
-}
-
-.level-btn:nth-child(8) .btn-bg {
-    background-color: #63D96B;
-}
-
-.level-btn:nth-child(9) .btn-bg {
-    background-color: #75D654;
-}
-
-.level-btn:nth-child(10) .btn-bg {
-    background-color: #8CC53B;
-}
-
-.level-btn:nth-child(11) .btn-bg {
-    background-color: #A5B01D;
-}
-
-.level-btn:nth-child(12) .btn-bg {
-    background-color: #BA9F04;
-}
-
-.level-btn:nth-child(13) .btn-bg {
-    background-color: #C59218;
-}
-
-.level-btn:nth-child(14) .btn-bg {
-    background-color: #CE853A;
-}
-
-.level-btn:nth-child(15) .btn-bg {
-    background-color: #D7795B;
-}
-
-.level-btn:nth-child(16) .btn-bg {
-    background-color: #E06D7A;
-}
-
-.level-btn:nth-child(17) .btn-bg {
-    background-color: #E86297;
-}
-
-.level-btn:nth-child(18) .btn-bg {
-    background-color: #F156B7;
-}
-
-.level-btn:nth-child(19) .btn-bg {
-    background-color: #FA49D7;
 }

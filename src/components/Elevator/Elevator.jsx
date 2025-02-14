@@ -3,69 +3,36 @@ import {Button, Col} from "react-bootstrap";
 import {GiElevator} from "react-icons/gi";
 
 import './styles.css';
+import ColorGradientService from "../../services/ColorGradient";
 
 const Elevator = props => {
-    const [levels, setLevels] = useState([
-        {id: 'grateful'},
-        {id: 'wise, insightful'},
-        {id: 'creative, innovative'},
-        {id: 'resourceful'},
-        {id: 'hopeful, optimistic'},
-        {id: 'appreciative'},
-        {id: 'patient, understanding'},
-        {id: 'sense of humor'},
-        {id: 'flexible, adaptive'},
-        {id: 'curious, interested'},
-        {id: 'impatient, frustrated'},
-        {id: 'irritated, bothered'},
-        {id: 'worried, anxious'},
-        {id: 'defensive, insecure'},
-        {id: 'judgemental, blaming'},
-        {id: 'self-righteous'},
-        {id: 'stressed, burned-out'},
-        {id: 'angry, hostile'},
-        {id: 'depressed'}
-    ]);
     const [elevatorHeight, setElevatorHeight] = useState(0);
+    const [colorArr, setColorArr] = useState(ColorGradientService.generateColors(
+        props.colors[0], props.colors[1], props.levels.length));
 
-    const incrementLevel = level => {
-        const newLevels = [...levels];
-
-        if (newLevels[level]['count']) {
-            newLevels[level].count++;
-        } else {
-            newLevels[level]['count'] = 1;
-        }
-
-        setLevels(newLevels);
-    };
-
-    const decrementLevel = (event, level) => {
-        event.stopPropagation();
-        const newLevels = [...levels];
-
-        if (newLevels[level]['count'] > 0) {
-            newLevels[level].count--;
-            setLevels(newLevels);
-        }
-    };
-
-    const getButtonStyles = count => {
+    const getButtonStyles = (index, count) => {
         let highestCount = 0;
         let opacity = 0.15;
 
-        if (count > 0) {
-            levels.forEach(level => {
-                if (level.count > highestCount) {
-                    highestCount = level.count;
-                }
-            });
+        props.levels.forEach(level => {
+            if (level.count > highestCount) {
+                highestCount = level.count;
+            }
+        });
 
-            opacity = count / highestCount * .5 + .15;
+        if (highestCount === 0) {
+            opacity = 1;
+        } else {
+            if (count > 0) {
+                opacity = 0.3 + 0.7 * count / highestCount;
+            } else {
+                opacity = 0.15;
+            }
         }
 
         return {
-            opacity: opacity
+            opacity: opacity,
+            backgroundColor: '#' + colorArr[index]
         }
     }
 
@@ -76,45 +43,43 @@ const Elevator = props => {
     }
 
     useEffect(() => {
-        let lowestLevel = 0;
         let totalCount = 0;
         let totalWeight = 0;
         let height;
 
-        levels.forEach((level, index) => {
-            if (level.count > 0) {
-                if (!lowestLevel) lowestLevel = index;
-            }
-        });
-
-        levels.forEach((level, index) => {
+        props.levels.forEach((level, index) => {
             if (level.count > 0) {
                 totalCount += level.count;
-                totalWeight += (levels.length - index - 1) * level.count;
+                totalWeight += (props.levels.length - index - 1) * level.count;
             }
         });
 
-        height = totalWeight / totalCount / levels.length * 100;
+        height = totalWeight / totalCount / props.levels.length * 100;
         if (isNaN(height) || height < 0) height = 0;
 
         setElevatorHeight(height);
-    }, [levels]);
+    }, [props.levels]);
+
+    useEffect(() => {
+        setColorArr(ColorGradientService.generateColors(props.colors, props.levels.length));
+    }, [props.colors, props.levels]);
 
     return (
         <>
             <Col className='elevator-col col-auto d-flex'>
                 <div className='elevator-list d-grid text-center'>
-                    {levels.map((level, index) => (
-                        <Button key={index} variant='light' className='level-btn py-0 position-relative overflow-hidden'
-                                onClick={() => incrementLevel(index)}>
-                            <div className='btn-bg' style={getButtonStyles(level.count)}></div>
+                    {props.levels.map((level, index) => (
+                        <Button key={index} variant='light'
+                                className='level-btn py-0 position-relative overflow-hidden'
+                                onClick={() => props.incrementLevel(index)}>
+                            <div className='btn-bg' style={getButtonStyles(index, level.count)}></div>
 
                             <div className='btn-count position-absolute lead'
-                                 onClick={event => decrementLevel(event, index)}>
+                                 onClick={event => props.decrementLevel(event, index)}>
                                 <b className='count-pill badge pill text-dark'>{level.count > 0 && level.count}</b>
                             </div>
 
-                            <div className='position-relative my-1'>{level.id}</div>
+                            <div className='position-relative my-1'>{level.label}</div>
                         </Button>
                     ))}
                 </div>
