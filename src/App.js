@@ -38,6 +38,7 @@ function App() {
     const [levels, setLevels] = useState(getItem('levels') || origLevels);
     const [newLevel, setNewLevel] = useState('');
     const [levelsChanged, setLevelsChanged] = useState(getItem('levelsChanged') || false);
+    const [randomizeLevels, setRandomizeLevels] = useState(false);
     const [colors, setColors] = useState(getItem('colors') || origColors);
     const [colorsChanged, setColorsChanged] = useState(getItem('colorsChanged') || false);
     const [showOffCanvas, setShowOffCanvas] = useState(false);
@@ -167,6 +168,32 @@ function App() {
         }
     }
 
+    const orderLevels = randomize => {
+        if (randomize) {
+            setRandomizeLevels(true);
+            setLevels(shuffle([...levels]));
+        } else {
+            setRandomizeLevels(false);
+            setLevels(sort([...levels]));
+        }
+    }
+
+    // randomize array element order
+    const shuffle = array => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+
+        return array;
+    }
+
+    const sort = array => {
+        return array.sort((a, b) => {
+           return a.id > b.id ? 1 : -1;
+        });
+    }
+
     useEffect(() => {
 
         // set state data in local storage
@@ -210,9 +237,15 @@ function App() {
                             <h2 className='display-6'>Options</h2>
 
                             <Form.Group className='my-3'>
-                                <Form.Check type="checkbox" id='randomizePlayersCheckbox' label="Show team elevation"
+                                <Form.Check type="checkbox" label="Show team elevation"
                                             defaultChecked={showElevator}
                                             onClick={e => setShowElevator(e.currentTarget.checked)}/>
+                            </Form.Group>
+
+                            <Form.Group className='my-3'>
+                                <Form.Check type="checkbox" label="Randomize levels"
+                                            defaultChecked={randomizeLevels}
+                                            onClick={e => orderLevels(e.currentTarget.checked)}/>
                             </Form.Group>
 
                             <div className='d-flex align-items-end mt-4 mb-4'>
