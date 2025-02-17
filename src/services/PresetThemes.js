@@ -16,7 +16,7 @@ const presetThemes = [
     {name: 'Raspberry Meringue', start: 'D198C5', end: 'E0C568'},
     {name: 'Bubblegum Sidewalk', start: '777777', end: 'EA738D'},
     {name: 'Cherry Licorice', start: 'E94B3C', end: '2D2926'},
-    {name: 'Strawberry Cream', start: '990011', end: 'FCF6F5'}
+    {name: 'Strawberry Cream', start: '990011', end: 'fff4c2'}
 ];
 
 // export array sorted by name property

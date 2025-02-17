@@ -38,11 +38,11 @@ function App() {
     const [levels, setLevels] = useState(getItem('levels') || origLevels);
     const [newLevel, setNewLevel] = useState('');
     const [levelsChanged, setLevelsChanged] = useState(getItem('levelsChanged') || false);
-    const [randomizeLevels, setRandomizeLevels] = useState(false);
+    const [randomizeLevels, setRandomizeLevels] = useState(getItem('randomizeLevels') || false);
     const [colors, setColors] = useState(getItem('colors') || origColors);
     const [colorsChanged, setColorsChanged] = useState(getItem('colorsChanged') || false);
     const [showOffCanvas, setShowOffCanvas] = useState(false);
-    const [showElevator, setShowElevator] = useState(false);
+    const [showElevator, setShowElevator] = useState(getItem('showElevator') || false);
     const [showContinueModal, setShowContinueModal] = useState(false);
     const [showLabelModal, setShowLabelModal] = useState(false);
     const [showThemeModal, setShowThemeModal] = useState(false);
@@ -54,7 +54,7 @@ function App() {
         })
     );
 
-    const gradientDemoStyles = {
+    const defaultLevelStyles = {
         background: 'linear-gradient(to right, #' + colors[0] + ', #' + colors[1] + ')'
     };
 
@@ -103,6 +103,8 @@ function App() {
         setLevelsChanged(false);
         setColors(origColors);
         setColorsChanged(false);
+        setShowElevator(false);
+        setRandomizeLevels(false)
     }
 
     const updateLevel = (e, i) => {
@@ -127,6 +129,8 @@ function App() {
             newLevels.unshift({id: newLevelId, label: newLevel});
             setLevels(newLevels);
             levelInputRef.current.value = '';
+            setNewLevel('');
+            setLevelsChanged(true);
         }
     }
 
@@ -194,7 +198,7 @@ function App() {
 
     const sort = array => {
         return array.sort((a, b) => {
-           return a.id > b.id ? 1 : -1;
+            return a.id > b.id ? 1 : -1;
         });
     }
 
@@ -205,12 +209,14 @@ function App() {
             colors: colors,
             colorsChanged: colorsChanged,
             levels: levels,
-            levelsChanged: levelsChanged
+            levelsChanged: levelsChanged,
+            randomizeLevels: randomizeLevels,
+            showElevator: showElevator
         }))
-    }, [colors, colorsChanged, levels, levelsChanged]);
+    }, [colors, colorsChanged, levels, levelsChanged, randomizeLevels, showElevator]);
 
     useEffect(() => {
-        // check for saved game and prompt for continuation
+        // check for saved state and prompt for continuation
         if (getItem('levels').filter(l => l.count > 0).length > 0 ||
             getItem('levelsChanged') === true ||
             getItem('colorsChanged') === true) {
@@ -264,7 +270,7 @@ function App() {
                                     />
                                 </div>
 
-                                <div style={gradientDemoStyles} className='flex-fill mb-2 py-2'></div>
+                                <div style={defaultLevelStyles} className='flex-fill mb-2 py-2'></div>
 
                                 <div className='px-2 text-center'>
                                     <Form.Label htmlFor='endColorInput'>End color</Form.Label>
@@ -356,11 +362,12 @@ function App() {
                 <Modal.Body>
                     <Form onSubmit={event => addLevel(event)}>
                         <Form.Control ref={levelInputRef}
-                                      placeholder='Enter a new level label'
+                                      placeholder='Enter a unique level label'
                                       className='bg-body-secondary mb-3'
                                       defaultValue={newLevel}
                                       autoCapitalize='none'
-                                      onKeyDown={event => setNewLevel(event.currentTarget.value)}/>
+                                      onKeyDown={event => setNewLevel(event.currentTarget.value)}
+                                      autoFocus/>
                     </Form>
 
                     <DndContext
